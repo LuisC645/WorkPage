@@ -3,29 +3,42 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+  /* Bloquea el rebote elástico y gestos táctiles del navegador */
+  overscroll-behavior: none;
 }
 
-/* Fondo total que ocupa la ventana */
+html, body {
+  /* Evita que el cuerpo se mueva */
+  overflow: hidden;
+  height: 100%;
+  width: 100%;
+  position: fixed;
+}
+
+/* Fondo total bloqueado */
 .app-container {
   background-color: #050914; 
   color: white;
-  min-height: 100vh;
+  height: 100vh;
   width: 100vw;
-  min-width: none;
   display: flex;
   justify-content: center;
   align-items: center;
   font-family: 'Inter', system-ui, sans-serif;
-  overflow-x: hidden;
+  
+  /* Bloqueo total de scroll y gestos de zoom con dedos */
+  overflow: hidden;
+  touch-action: none; 
+  user-select: none; /* Evita seleccionar texto por error al clickear rápido */
 }
 
-/* Tarjeta compacta: se ajusta en móvil, fija en PC */
+/* Tarjeta compacta */
 .card {
   background-color: #0f172a;
   padding: 30px;
   border-radius: 24px;
-  width: 50%; /* En móvil ocupa el 90% del ancho */
-  max-width: 240px; /* En PC se queda pequeña */
+  width: 90%; /* Ajuste para que en móvil no se pegue al borde */
+  max-width: 240px; 
   min-width: 180px;
   text-align: center;
   border: 1px solid #1e293b;
@@ -33,6 +46,9 @@
   display: flex;
   flex-direction: column;
   gap: 20px;
+  
+  /* Asegura que la tarjeta no active scrolls internos */
+  overflow: hidden;
 }
 
 .titulo {
@@ -52,7 +68,7 @@
 .tiempo-grande {
   color: white;
   font-family: 'JetBrains Mono', monospace;
-  font-size: 2rem; /* Tamaño optimizado para visibilidad */
+  font-size: 2rem;
   font-weight: bold;
 }
 
@@ -67,7 +83,6 @@
   font-size: 0.9rem;
 }
 
-/* Bolitas con ajuste de renglón automático */
 .dots-container {
   display: flex;
   flex-wrap: wrap;
@@ -89,7 +104,6 @@
   box-shadow: 0 0 10px #f97316;
 }
 
-/* Botones verticales táctiles */
 .controles-col {
   display: flex;
   flex-direction: column;
@@ -105,7 +119,7 @@
   font-size: 0.875rem;
   font-weight: bold;
   cursor: pointer;
-  -webkit-tap-highlight-color: transparent; /* Evita el recuadro gris en móvil */
+  -webkit-tap-highlight-color: transparent;
 }
 
 .btn:active {
@@ -113,7 +127,6 @@
   opacity: 0.9;
 }
 
-/* Sección manual optimizada para dedos */
 .manual-col {
   padding-top: 15px;
   border-top: 1px solid #1e293b;
@@ -141,7 +154,7 @@
   background-color: #334155;
   color: white;
   border: none;
-  width: 35px; /* Más grandes para facilitar el toque en móvil */
+  width: 35px;
   height: 35px;
   border-radius: 8px;
   cursor: pointer;
