@@ -63,7 +63,7 @@ export default function App() {
       const gainNode = audioCtxRef.current.createGain();
       osc.type = 'sine';
       osc.frequency.setValueAtTime(880, audioCtxRef.current.currentTime);
-      gainNode.gain.setValueAtTime(0.5, audioCtxRef.current.currentTime); 
+      gainNode.gain.setValueAtTime(1.2, audioCtxRef.current.currentTime); 
       osc.connect(gainNode);
       gainNode.connect(audioCtxRef.current.destination);
       osc.start();
