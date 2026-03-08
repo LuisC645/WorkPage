@@ -142,8 +142,10 @@ html, body {
   gap: 2px;
 }
 
+
+
 .manual-num {
-  font-size: 2rem;
+  font-size: 1.9rem;
   font-weight: bold;
   color: #f97316;
   font-family: monospace;
