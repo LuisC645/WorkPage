@@ -68,7 +68,7 @@ export default function App() {
       osc.frequency.setValueAtTime(880, audioCtxRef.current.currentTime);
 
       // Volume
-      gainNode.gain.setValueAtTime(2, audioCtxRef.current.currentTime); 
+      gainNode.gain.setValueAtTime(1.5, audioCtxRef.current.currentTime); 
 
       osc.connect(gainNode);
       gainNode.connect(audioCtxRef.current.destination);
