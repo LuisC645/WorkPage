@@ -3,10 +3,10 @@ import './App.css';
 
 export default function App() {
   const TIEMPO_TOTAL = 3600; 
-  const TIEMPO_TAREA = 212; 
+  const TIEMPO_TAREA = 212; // 3:32 en segundos
 
   const [segundos, setSegundos] = useState(TIEMPO_TOTAL); 
-  const [cronometro, setCronometro] = useState(0); 
+  const [cronometroTotal, setCronometroTotal] = useState(0); 
   const [corriendo, setCorriendo] = useState(false);
   const [tareasAuto, setTareasAuto] = useState(0);
   const [contadorManual, setContadorManual] = useState(0);
@@ -41,8 +41,11 @@ export default function App() {
     workerRef.current.onmessage = (e) => {
       const { restante, transcurrido } = e.data;
       if (restante !== undefined) setSegundos(restante);
+      
       if (transcurrido !== undefined) {
-        setCronometro(transcurrido);
+        setCronometroTotal(transcurrido);
+        
+        // El pitido suena justo cuando el total es múltiplo exacto de 212
         const tareasActuales = Math.floor(transcurrido / TIEMPO_TAREA);
         if (tareasActuales > ultimaTareaRef.current) {
           sonarPitido();
@@ -63,7 +66,10 @@ export default function App() {
       const gainNode = audioCtxRef.current.createGain();
       osc.type = 'sine';
       osc.frequency.setValueAtTime(880, audioCtxRef.current.currentTime);
-      gainNode.gain.setValueAtTime(1.2, audioCtxRef.current.currentTime); 
+
+      // Volume
+      gainNode.gain.setValueAtTime(2, audioCtxRef.current.currentTime); 
+
       osc.connect(gainNode);
       gainNode.connect(audioCtxRef.current.destination);
       osc.start();
@@ -76,7 +82,7 @@ export default function App() {
     if (!audioCtxRef.current) audioCtxRef.current = new (window.AudioContext || window.webkitAudioContext)();
     const ahora = Date.now();
     endTimeRef.current = ahora + (segundos * 1000);
-    startTimeRef.current = ahora - (cronometro * 1000);
+    startTimeRef.current = ahora - (cronometroTotal * 1000);
     workerRef.current.postMessage({ action: 'start', endTime: endTimeRef.current, startTime: startTimeRef.current });
     setCorriendo(true);
   };
@@ -89,7 +95,7 @@ export default function App() {
   const reiniciarTodo = () => {
     pausarTodo();
     setSegundos(TIEMPO_TOTAL);
-    setCronometro(0);
+    setCronometroTotal(0);
     setTareasAuto(0);
     setContadorManual(0);
     ultimaTareaRef.current = 0;
@@ -107,8 +113,14 @@ export default function App() {
         <h1 className="titulo">Trabajo</h1>
         
         <div className="stats-col">
+          {/* Cronómetro de 1 hora que baja */}
           <p className="tiempo-grande">{formatear(segundos)}</p>
-          <p className="tiempo-guia-info">Transcurrido: {formatear(cronometro)}</p>
+          
+          {/* Cronómetro de Tarea que REINICIA CADA 3:32 */}
+          <p className="tiempo-guia-info">
+            Tarea: {formatear(cronometroTotal % TIEMPO_TAREA)}
+          </p>
+          
           <p className="cycle-info">Ciclo: {tareasAuto + 1} / 17</p>
           
           <div className="dots-container">
